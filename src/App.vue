@@ -3,7 +3,9 @@
     <Header title="购物车案例"></Header>
     <div>
       <Goods v-for="item in list" :key="item.id" :title="item.goods_name" :pic="item.goods_img" :id="item.id"
-        :price="item.goods_price" :state="item.goods_state" :count="item.goods_count" @state-change="getNewState"></Goods>
+        :price="item.goods_price" :state="item.goods_state" :count="item.goods_count" @state-change="getNewState">
+        <Counter :num="item.goods_count" @num-change="getNewNum(item, $event)" #default :id="item.id"></Counter>
+      </Goods>
       <Footer :isfull="fullName" :amount="amt" :all='total' @full-change="getFullState"></Footer>
     </div>
   </div>
@@ -15,6 +17,7 @@ import Header from '@/components/Header/Header.vue';
 import Goods from '@/components/Goods/Goods.vue';
 import Footer from '@/components/Footer/Footer.vue';
 import bus from '@/components/eventBus.js';
+import Counter from '@/components/Counter/Counter.vue';
 export default {
   data() {
     return {
@@ -60,12 +63,16 @@ export default {
     },
     getFullState(val) {
       this.list.forEach(item => item.goods_state = val);
+    },
+    getNewNum(item, e) {
+      item.goods_count = e;
     }
   },
   components: {
     Header,
     Goods,
-    Footer
+    Footer,
+    Counter
   }
 }
 </script>
